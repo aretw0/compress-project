@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.0.0)
+project(Cmprss)
+set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_CXX_STANDARD 11)
+set(SRC_DIR src)
+set(SOURCE_FILES ${SRC_DIR}/rule.cpp ${SRC_DIR}/huff.cpp ${SRC_DIR}/shfe.cpp ${SRC_DIR}/cmprss.cpp ${SRC_DIR}/common.cpp)
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
