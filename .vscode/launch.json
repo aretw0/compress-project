@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/Debug/Cmprss",
             "args": [
-                "shfe",
+                "huff",
                 "${workspaceFolder}/data/lena.bmp"
             ],
             "stopAtEntry": false,

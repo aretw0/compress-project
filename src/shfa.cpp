@@ -1,9 +1,9 @@
-#include "shfe.h"
+#include "shfa.h"
 #include "common.h"
 
 // constructor (creates a new Queue)
 template<class T>
-QueueShfe<T>::QueueShfe(int d)
+QueueShfa<T>::QueueShfa(int d)
 {
     if(d<2) d=2; //min a 2-heap is supported
     D=d;
@@ -12,23 +12,36 @@ QueueShfe<T>::QueueShfe(int d)
     arr=new T*[size];
 }
 
-// is QueueShfe empty?
+// is QueueShfa empty?
 template<class T>
-bool QueueShfe<T>::empty(void) const
+bool QueueShfa<T>::empty(void) const
 {
     return (back<=0);
 }
-
-// is QueueShfe full?
 template<class T>
-bool QueueShfe<T>::full(void) const
+int QueueShfa<T>::getback(void) const{
+    return back;
+}
+
+// is QueueShfa full?
+template<class T>
+bool QueueShfa<T>::full(void) const
 {
     return (back>=size);
 }
 
-// the front element of the QueueShfe 
 template<class T>
-T* QueueShfe<T>::deq(void)
+int QueueShfa<T>::countfreq(void) const
+{   int count = 0;
+    for (int i = 0; i < back; ++i) {
+        count += (*arr[i]).get_freq();
+    }
+    return count;
+}
+
+// the front element of the QueueShfa 
+template<class T>
+T* QueueShfa<T>::deq(void)
 {
     if(empty())
     {
@@ -43,9 +56,9 @@ T* QueueShfe<T>::deq(void)
     return rval;
 }
 
-// a copy of the front element is returned but the QueueShfe is not changed
+// a copy of the front element is returned but the QueueShfa is not changed
 template<class T>
-T* QueueShfe<T>::front(void)
+T* QueueShfa<T>::front(void)
 {
     if(empty())
     {
@@ -56,9 +69,9 @@ T* QueueShfe<T>::front(void)
     return arr[0];
 }
 
-// a new element to put in the QueueShfe
+// a new element to put in the QueueShfa
 template<class T>
-void QueueShfe<T>::enq(T* foo)
+void QueueShfa<T>::enq(T* foo)
 {
     if(full()) //if the array is full then make it larger
     {
@@ -71,16 +84,16 @@ void QueueShfe<T>::enq(T* foo)
         size=nsize; //size update
     }
 
-    //the new element added to the back of the QueueShfe
+    //the new element added to the back of the QueueShfa
     //and the reheapup called to fix the order back
     arr[back++]=foo; //arr[back]=foo;++back;
     reheapup(0, back-1); 
 }
 
-// this is a recursive function to fix back the order in the QueueShfe
-// upwards after a new element added back (bottom) of the QueueShfe 
+// this is a recursive function to fix back the order in the QueueShfa
+// upwards after a new element added back (bottom) of the QueueShfa 
 template<class T>
-void QueueShfe<T>::reheapup(int root, int bottom)
+void QueueShfa<T>::reheapup(int root, int bottom)
 {
     int parent; //parent node (in the virtual tree) of the bottom element
 
@@ -99,23 +112,23 @@ void QueueShfe<T>::reheapup(int root, int bottom)
     }
 }
 
-// this is a recursive function to fix back the order in the QueueShfe
-// downwards after a new element added front (root) of the QueueShfe 
+// this is a recursive function to fix back the order in the QueueShfa
+// downwards after a new element added front (root) of the QueueShfa 
 template<class T>
-void QueueShfe<T>::reheapdown(int root, int bottom)
+void QueueShfa<T>::reheapdown(int root, int bottom)
 {
     int minchild, firstchild, child;
 
     firstchild=root*D+1; //the position of the first child of the root
 
-    if(firstchild <= bottom) //if the child is in the QueueShfe
+    if(firstchild <= bottom) //if the child is in the QueueShfa
     {
         minchild=firstchild; //first child is the min child (temporarily)
 
         for(int i=2;i <= D;++i)
         {
             child=root*D+i; //position of the next child
-            if(child <= bottom) //if the child is in the QueueShfe
+            if(child <= bottom) //if the child is in the QueueShfa
             {
                 //if the child is less than the current min child
                 //then it will be the new min child
@@ -139,7 +152,7 @@ void QueueShfe<T>::reheapdown(int root, int bottom)
 
 // the values of 2 variables will be swapped
 template<class T>
-void QueueShfe<T>::swap(T* &a, T* &b)
+void QueueShfa<T>::swap(T* &a, T* &b)
 {
     T* c;
     c=a;
@@ -149,20 +162,26 @@ void QueueShfe<T>::swap(T* &a, T* &b)
 
 // destructor (because default dest. does not erase the array)
 template<class T>
-QueueShfe<T>::~QueueShfe(void)
+QueueShfa<T>::~QueueShfa(void)
 {
     delete[] arr;
 }
 
 //constructor
-Shfe::Shfe(void)
+Shfa::Shfa(void)
 {
     Node* N=new Node;
     root=N;
 }
 
+//constructor
+Shfa::Shfa(const Shfa & sh)
+{
+    root= sh.root;
+}
+
 //recursive func to delete the whole tree
-void Shfe::chop(Node *N)
+void Shfa::chop(Node *N)
 {
     if(N)
     {
@@ -173,58 +192,58 @@ void Shfe::chop(Node *N)
 }
 
 //destructor for tree objects
-Shfe::~Shfe(void)
+Shfa::~Shfa(void)
 {
     chop(root);
 }
 
-unsigned int Shfe::get_freq(void) const
+unsigned int Shfa::get_freq(void) const
 {
     return root->freq;
 }
 
-unsigned char Shfe::get_char(void) const
+unsigned char Shfa::get_char(void) const
 {
     return root->ch;
 }
 
-void Shfe::set_freq(unsigned int f)
+void Shfa::set_freq(unsigned int f)
 {
     root->freq=f;
 }
 
-void Shfe::set_char(unsigned char c)
+void Shfa::set_char(unsigned char c)
 {
     root->ch=c;
 }
 
-Shfe::Node* Shfe::get_left(void) const
+Shfa::Node* Shfa::get_left(void) const
 {
     return root->left;
 }
 
-Shfe::Node* Shfe::get_right(void) const
+Shfa::Node* Shfa::get_right(void) const
 {
     return root->right;
 }
 
-void Shfe::set_left(Node* N)
+void Shfa::set_left(Node* N)
 {
     root->left=N;
 }
 
-void Shfe::set_right(Node* N)
+void Shfa::set_right(Node* N)
 {
     root->right=N;
 }
 
-Shfe::Node* Shfe::get_root(void) const
+Shfa::Node* Shfa::get_root(void) const
 {
     return root;
 }
 
 //the recursive tree output (w/ respect to its graph) fn.
-void Shfe::print(ostream & ost, Node * curr, int level) const
+void Shfa::print(ostream & ost, Node * curr, int level) const
 {
     if(curr) //if the current node is not null then
     {
@@ -237,7 +256,7 @@ void Shfe::print(ostream & ost, Node * curr, int level) const
 }
 
 //the recursive tree print (w/ respect to its graph) fn.
-void Shfe::print(Node * curr, int level) const
+void Shfa::print(Node * curr, int level) const
 {
     if(curr) //if the current node is not null then
     {
@@ -250,7 +269,7 @@ void Shfe::print(Node * curr, int level) const
 }
 
 //utility fn to output a tree
-ostream & operator<<(ostream &ost, const Shfe &t)
+ostream & operator<<(ostream &ost, const Shfa &t)
 {
     t.print(ost, t.root, 1);
     return ost;
@@ -258,43 +277,43 @@ ostream & operator<<(ostream &ost, const Shfe &t)
 
 //the comparison operator overloads to compare 2 Huffman trees
 
-bool Shfe::operator==(const Shfe & T) const
+bool Shfa::operator==(const Shfa & T) const
 {
     return (root->freq == T.root->freq);    
 }
 
-bool Shfe::operator!=(const Shfe & T) const
+bool Shfa::operator!=(const Shfa & T) const
 {
     return (root->freq != T.root->freq);    
 }
 
-bool Shfe::operator<(const Shfe & T) const
+bool Shfa::operator<(const Shfa & T) const
 {
     return (root->freq < T.root->freq);    
 }
 
-bool Shfe::operator>(const Shfe & T) const
+bool Shfa::operator>(const Shfa & T) const
 {
     return (root->freq > T.root->freq);    
 }
 
-bool Shfe::operator<=(const Shfe & T) const
+bool Shfa::operator<=(const Shfa & T) const
 {
     return (root->freq <= T.root->freq);    
 }
 
-bool Shfe::operator>=(const Shfe & T) const
+bool Shfa::operator>=(const Shfa & T) const
 {
     return (root->freq >= T.root->freq);    
 }
 
-//Huffman string finder (recursive func.)
+//Shannon Fano string finder (recursive func.)
 //input : a tree node to start the search, a char to find its
-//        Huffman string equivalent, current Huffman string according to
-//        position on the Huffman tree, and a string (by reference) to
-//        copy the resulted full Huffman string end of the search
-//return: none (except Huffman string by reference)
-void Shfe::shf(Node* N, unsigned char c, string str, string & s) const
+//        SHFA string equivalent, current SHFA string according to
+//        position on the tree, and a string (by reference) to
+//        copy the resulted full SHFA string end of the search
+//return: none (except SHFA string by reference)
+void Shfa::shf(Node* N, unsigned char c, string str, string & s) const
 {
     if(N) //if the node is not null
     {
@@ -316,7 +335,7 @@ void Shfe::shf(Node* N, unsigned char c, string str, string & s) const
 //input : a tree node to start the search, current Huffman string according to
 //        position on the Huffman tree
 //output: whole list of char-H. string code list of the H. tree
-void Shfe::shf_list(Node* N, string str) const
+void Shfa::shf_list(Node* N, string str) const
 {
     if(N) //if the node is not null
     {
@@ -331,11 +350,11 @@ void Shfe::shf_list(Node* N, string str) const
     }
 }
 
-//char finder with given Huffman string
-//input : a Huffman string to traverse on the H. tree and
+//char finder with given ShannonFano string
+//input : a ShannonFano string to traverse on the SHFA tree and
 //        a u. char by ref. to copy the char found
 //return: true if a char is found else false
-bool Shfe::get_shf_char(string s, unsigned char & c) const
+bool Shfa::get_shf_char(string s, unsigned char & c) const
 {
     Node * curr=root;
     for(unsigned int i=0;i<s.size();++i)
@@ -360,7 +379,7 @@ bool Shfe::get_shf_char(string s, unsigned char & c) const
 //input : a H. tree node
 //return: the same char as string or if the char is not printable
 //        then its octal representation in the ASCII char set
-string Shfe::print_char(Node * N) const
+string Shfa::print_char(Node * N) const
 {
     string s="";
 
@@ -390,7 +409,7 @@ string Shfe::print_char(Node * N) const
 
 //the given bit will be written to the output file stream
 //input : unsigned char i(:0 or 1 : bit to write ; 2:EOF) 
-void Shfe::shf_write(unsigned char i, ofstream & outfile)
+void Shfa::shf_write(unsigned char i, ofstream & outfile)
 {
     static int bit_pos=0; //0 to 7 (left to right) on the byte block
     static unsigned char c='\0'; //byte block to write
@@ -418,7 +437,7 @@ void Shfe::shf_write(unsigned char i, ofstream & outfile)
 
 //input : a input file stream to read bits
 //return: unsigned char (:0 or 1 as bit read or 2 as EOF) 
-unsigned char Shfe::shf_read(ifstream & infile)
+unsigned char Shfa::shf_read(ifstream & infile)
 {
     static int bit_pos=0; //0 to 7 (left to right) on the byte block
     static unsigned char c=infile.get();
@@ -439,9 +458,53 @@ unsigned char Shfe::shf_read(ifstream & infile)
     return i;     
 }
 
+void Shfa::buildtree(Shfa * tp, QueueShfa<Shfa> & qA) const
+{
+    if (!qA.empty()) {
+
+        if (qA.getback() == 2) {
+            (*tp).set_right((*(qA.deq())).get_root());
+            (*tp).set_left((*(qA.deq())).get_root());
+        } else {
+
+            unsigned int prob = 0;
+            unsigned int max_prob = qA.countfreq();
+            QueueShfa<Shfa> qB(3);
+            Shfa* tpT;
+            
+            while(((float)prob < ((float)max_prob/(float)2)) && (!qA.empty())) {
+                tpT=qA.deq();
+                prob += (*tpT).get_freq();
+                qB.enq(tpT);
+            }
+
+            if (!qA.empty()) {
+                Shfa* tpA = new Shfa;
+                (*tpA).set_freq(qA.countfreq());
+                (*tp).set_left((*tpA).get_root());
+                buildtree(tpA,qA);
+            }
+
+            tpT=qB.deq();
+            Shfa* tpB = new Shfa;
+
+            if (!qB.empty()) {
+                qB.enq(tpT);
+                (*tpB).set_freq(prob);
+                buildtree(tpB,qB);
+            } else {
+                (*tpB).set_freq((*tpT).get_freq());
+                (*tpB).set_char((*tpT).get_char());
+            }
+            (*tp).set_right((*tpB).get_root()); 
+        }
+        
+    }
+}
+
 
 //Shannon Fano Encoder
-void Shfe::encode(ifstream & infile, ofstream & outfile, bool verbose)
+void Shfa::encode(ifstream & infile, ofstream & outfile, bool verbose)
 {
 
     //array to hold frequency table for all ASCII characters in the file
@@ -461,9 +524,10 @@ void Shfe::encode(ifstream & infile, ofstream & outfile, bool verbose)
     infile.clear(); //clear EOF flag
     infile.seekg(0); //reset get() pointer to beginning
 
-    QueueShfe<Shfe> q(3); //use a 3-(priority)heap
-    Shfe* tp;
+    QueueShfa<Shfa> q(3); //use a 3-(priority)heap
+    Shfa* tp;    
 
+    unsigned int max_prob = 0;
     for(int i=0;i<256;++i)
     {
         //output char freq table to the output file
@@ -475,34 +539,18 @@ void Shfe::encode(ifstream & infile, ofstream & outfile, bool verbose)
  
         if(f[i]>0)
         {
+            max_prob += f[i];
             //send freq-char pairs to the priority heap as Shannon Fano trees
-            tp=new Shfe;
+            tp=new Shfa;
             (*tp).set_freq(f[i]);
             (*tp).set_char(static_cast<unsigned char>(i));
             q.enq(tp);
         }
     }
 
-    //construct the main Shannon Fano Tree
-    Shfe* tp2;
-    Shfe* tp3;
-
-    do
-    {
-        tp=q.deq();
-        if(!q.empty())
-        {
-            //get the 2 lowest freq. trees and combine them into one
-            //and put back into the priority heap
-            tp2=q.deq();
-            tp3=new Shfe;
-            (*tp3).set_freq((*tp).get_freq()+(*tp2).get_freq());
-            (*tp3).set_left((*tp).get_root());
-            (*tp3).set_right((*tp2).get_root());
-            q.enq(tp3);
-        }
-    }
-    while(!q.empty()); //until all sub-trees combined into one
+    tp=new Shfa;
+    (*tp).set_freq(max_prob); // the principal node
+    buildtree(tp,q);
 
     //find strings of all chars in the H. tree and put into a string table
     string S_table[256];
@@ -550,7 +598,7 @@ void Shfe::encode(ifstream & infile, ofstream & outfile, bool verbose)
 
 
 //Shannon Fano Decoder
-void Shfe::decode(ifstream & infile, ofstream & outfile,bool verbose)
+void Shfa::decode(ifstream & infile, ofstream & outfile,bool verbose)
 {
 
     //read frequency table from the input file
@@ -571,41 +619,26 @@ void Shfe::decode(ifstream & infile, ofstream & outfile,bool verbose)
     }
 
     //re-construct the Shannon Fano Huff
-    QueueShfe<Shfe> q(3); //use a 3-(priority)heap (again)
-    Shfe* tp;
+    QueueShfa<Shfa> q(3); //use a 3-(priority)heap (again)
+    Shfa* tp;
+    unsigned int max_prob = 0;
 
     for(int i=0;i<256;++i)
     {
         if(f[i]>0)
         {
             //send freq-char pairs to the priority heap as Shannon Fano trees
-            tp=new Shfe;
+            tp=new Shfa;
+            max_prob += f[i];
             (*tp).set_freq(f[i]);
             (*tp).set_char(static_cast<unsigned char>(i));
             q.enq(tp);
         }
     }
 
-    //construct the main Shannon Fano Tree (as in Encoder func.)
-    Shfe* tp2;
-    Shfe* tp3;
-
-    do
-    {
-        tp=q.deq();
-        if(!q.empty())
-        {
-            //get the 2 lowest freq. S. trees and combine them into one
-            //and put back into the priority heap
-            tp2=q.deq();
-            tp3=new Shfe;
-            (*tp3).set_freq((*tp).get_freq()+(*tp2).get_freq());
-            (*tp3).set_left((*tp).get_root());
-            (*tp3).set_right((*tp2).get_root());
-            q.enq(tp3);
-        }
-    }
-    while(!q.empty()); //until all sub-trees combined into one
+    tp=new Shfa;
+    (*tp).set_freq(max_prob); // the principal node
+    buildtree(tp,q);
 
     if(verbose)
     {
@@ -626,13 +659,13 @@ void Shfe::decode(ifstream & infile, ofstream & outfile,bool verbose)
         st=""; //current Shannon Fano string
         do
         {
-            //read H. strings bit by bit
+            //read SF. strings bit by bit
             ch=shf_read(infile);
             if(ch==0)
                 st=st+'0';
             if(ch==1)
                 st=st+'1';
-        } //search the H. tree
+        } //search the SF. tree
         while(!(*tp).get_shf_char(st, ch2)); //continue until a char is found
 
         //output the char to the output file
@@ -647,7 +680,7 @@ void Shfe::decode(ifstream & infile, ofstream & outfile,bool verbose)
 
 
 
-void Shfe::Start(string ifile) {
+void Shfa::Start(string ifile) {
     
     ifstream infile(ifile.c_str(), ios::in|ios::binary);
 
@@ -658,7 +691,7 @@ void Shfe::Start(string ifile) {
     }
 
     Common tool;
-    string ext = ".shfe";
+    string ext = ".shfa";
 
     string hash1 = tool.hashfile(infile);
 

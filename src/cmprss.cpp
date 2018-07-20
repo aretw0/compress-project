@@ -6,7 +6,7 @@
 
 #include "rule.h"
 #include "huff.h"
-#include "shfe.h"
+#include "shfa.h"
 
 void showUsage(string name, bool flag);
 void Start(int argc, char* argv[]);
@@ -19,42 +19,20 @@ int main(int argc, char* argv[]) {
     Rule rulen;
 
     Huff huffm;
-    Shfe shafe;
+    Shfa shafa;
 
     string alg = argv[1];
     string ifile = argv[2];
 
     cout << alg << "\t" << ifile << endl;
-
-    // cout << ifile.substr(ifile.rfind('/')+1,ifile.size()) << endl;
-
-    /* int a = 255;
-
-    char b = a;
-
-    char c = (char)a;
-
-    int d = (int)b;
-
-    int e = a & 0xff;
-
-    int f = b;
-
-    int g = b & 0xff;
-
-    cout << a << " " << b << " " << c << " " << d << " " << e << " " << f  << " " << g << std::endl;
- */
-
-
-
     time_t now = time(NULL);
 
     if (alg == "rule") {
         rulen.Start(ifile);
     } else if (alg == "huff") {
         huffm.Start(ifile);
-    } else if (alg == "shfe") {
-        shafe.Start(ifile);
+    } else if (alg == "shfa") {
+        shafa.Start(ifile);
     } else {
         cout << alg << endl;
     }
@@ -99,7 +77,7 @@ void Start(int argc, char* argv[]) {
 
 void showUsage(string name, bool flag) // função para mostrar uso
 {
-    string usage = "Usage: " + name + " <alg> <inputfile>\nDetails:\n-h\t\tShow this message\n<alg>\t\tAlgorithm: rule, huff or shfe\n<inputfile>\t\tInput file to compression/descompression\n";
+    string usage = "Usage: " + name + " <alg> <inputfile>\nDetails:\n-h\t\tShow this message\n<alg>\t\tAlgorithm: rule, huff or shfa\n<inputfile>\t\tInput file to compression/descompression\n";
 
     if (flag) {
         cerr << usage;

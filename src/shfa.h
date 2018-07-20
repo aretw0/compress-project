@@ -13,17 +13,19 @@ using namespace std;
 // priority queue
 // min (root=min) ((balanced) d-tree on dynamic array) d-heap
 template<class T>
-class QueueShfe
+class QueueShfa
 {
     public:
 
-        QueueShfe(int d=2); //constructor 
-        ~QueueShfe(void); //destructor
+        QueueShfa(int d=2); //constructor 
+        ~QueueShfa(void); //destructor
         void enq(T*); //enqueue (to push)
         T* deq(void); //dequeue (to pop)
         T* front(void); //the front element
         bool empty(void) const; //is empty?
         bool full(void) const; //is full?
+        int countfreq(void) const;
+        int getback(void) const;
 
     private:
 
@@ -33,8 +35,8 @@ class QueueShfe
         static const int SIZE=10; //size increment step size  
         int D; //max number of children for a parent>=2 
         //copy constructor and assignment are hidden to protect 
-        QueueShfe(const QueueShfe &);
-        const QueueShfe & operator=(const QueueShfe &);
+        QueueShfa(const QueueShfa &);
+        const QueueShfa & operator=(const QueueShfa &);
 
         //utility functions to fix the heap
         //when an element added or removed 
@@ -45,7 +47,7 @@ class QueueShfe
 }; //end class
 
 // ShannonFano Tree
-class Shfe
+class Shfa
 {
     private:
         class Node
@@ -63,8 +65,8 @@ class Shfe
 
         //copy cons. and assign. op. overload prototypes are private to
         //prevent them to be used
-        Shfe(const Shfe &); //copy constructor
-        const Shfe & operator=(const Shfe &); //assignment oper. overload
+        Shfa(const Shfa &); //copy constructor
+        const Shfa & operator=(const Shfa &); //assignment oper. overload
         void chop(Node * N); //destroys the tree
         void print(ostream &, Node *, int) const; //prints the tree
         void print(Node *, int) const; //prints the tree
@@ -76,9 +78,9 @@ class Shfe
 	    void decode(ifstream & infile, ofstream & outfile,bool verbose);
 
     public:
-        Shfe(void); //constructor
-        ~Shfe(void); //destructor
-        friend ostream & operator<<(ostream &, const Shfe &);
+        Shfa(void); //constructor
+        ~Shfa(void); //destructor
+        friend ostream & operator<<(ostream &, const Shfa &);
         //utility functions to get or set class members
         unsigned int get_freq(void) const;
         unsigned char get_char(void) const;
@@ -91,12 +93,12 @@ class Shfe
         Node* get_root(void) const;
         //comparison operator overloads to compare
         //2 objects of the class
-        bool operator==(const Shfe &) const;
-        bool operator!=(const Shfe &) const;
-        bool operator<(const Shfe &) const;
-        bool operator>(const Shfe &) const;
-        bool operator<=(const Shfe &) const;
-        bool operator>=(const Shfe &) const;
+        bool operator==(const Shfa &) const;
+        bool operator!=(const Shfa &) const;
+        bool operator<(const Shfa &) const;
+        bool operator>(const Shfa &) const;
+        bool operator<=(const Shfa &) const;
+        bool operator>=(const Shfa &) const;
 
         //to get H. string of a given char
         void shf(Node *, unsigned char, string, string &) const; 
@@ -104,7 +106,9 @@ class Shfe
         void shf_list(Node *, string) const; 
         //to get char equivalent of a H. string (if exists)
         bool get_shf_char(string, unsigned char &) const;
-        string print_char(Node *) const; //prints chars 
+        string print_char(Node *) const; //prints chars
+
+        void buildtree(Shfa *,QueueShfa<Shfa> &) const; 
 
         void Start(string ifile); 
 };
